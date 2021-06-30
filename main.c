@@ -41,6 +41,27 @@ void eval(bool *run, int *sp, int *ip, int stack[], int instr) {
 		stack[*sp] = sub;
 	}
 		break;
+	case MULT: {
+		int a = stack[*sp];
+		int b = stack[--*sp];
+		int mult = a * b;
+		stack[*sp] = mult;
+	}
+		break;
+	case DIV: {
+		int a = stack[*sp];
+		int b = stack[--*sp];
+		int div = a / b;
+		stack[*sp] = div;
+	}
+		break;
+	case DIVR: {
+		int a = stack[*sp];
+		int b = stack[--*sp];
+		int divr = b / a;
+		stack[*sp] = divr;
+	}
+		break;
 	case OUT:
 		printf("%d\n", stack[*sp]);
 		break;

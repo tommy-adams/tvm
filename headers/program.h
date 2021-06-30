@@ -7,8 +7,9 @@ typedef enum {
 	SUBR,
 	MULT,
 	DIV,
+	DIVR,
 	SET,
-	IN,
+	MOV,
 	OUT,
 	HLT
 } Instructions;
