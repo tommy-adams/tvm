@@ -1,5 +1,7 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "headers/program.h"
 #include "headers/tests.h"
 
@@ -18,7 +20,7 @@ void eval(bool *run, int *sp, int *ip, int stack[], int instr) {
 		stack[++*sp] = fetch(++*ip);
 		break;
 	case POP: 
-		*sp--;
+		--*sp;
 		break;
 	case ADD: {
 		int a = stack[*sp];
@@ -65,6 +67,35 @@ void eval(bool *run, int *sp, int *ip, int stack[], int instr) {
 	case OUT:
 		printf("%d\n", stack[*sp]);
 		break;
+	case IN: {
+		char instruction[5];
+		printf("Enter a command: ");
+		scanf("%s", instruction);
+
+		bool instrExists = false;
+		for (int i = 0; i < sizeof(conversions) / sizeof(conversions[0]); i++) {
+			if (strcmp(instruction, conversions[i].str) == 0) {
+				program[*ip] = conversions[i].instr;
+				instrExists = true;
+				break;
+			}
+		}
+
+		if (program[*ip] == 0) {
+			char value[11];
+			printf("Enter an integer: ");
+			scanf("%s", value);
+			program[*ip + 1] = atoi(value);
+		}
+
+		if (!instrExists) {
+			printf("Error: %s is not a command.\n", instruction);
+			program[*ip] = conversions[10].instr;
+		}
+
+		--*ip;
+	}
+		break;
 	default: break;
 	}
 }
@@ -73,6 +104,13 @@ void eval(bool *run, int *sp, int *ip, int stack[], int instr) {
 void printStack(int stack[]) {
 	for (int i = 0; i < sizeof(*stack); i++) {
 		printf("%d\n", stack[i]);
+	}
+}
+
+// print program instructions for testing purposes
+void printInstructions() {
+	for (int i = 0; i < sizeof(program) / sizeof(program[0]); i++) {
+		printf("%d\n", program[i]);
 	}
 }
 
